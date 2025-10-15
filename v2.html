@@ -1,0 +1,414 @@
+
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Simulasi App - Mock Attack Menu (AMAN)</title>
+<style>
+  :root{--bg:#0f1724;--card:#0b1220;--accent:#10b981;--muted:#94a3b8;--glass: rgba(255,255,255,0.03);}
+  *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  body{margin:0;background:linear-gradient(180deg,#071027 0%, #071428 100%);color:#e6eef8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .container{width:100%;max-width:420px;}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:14px; padding:18px; box-shadow:0 6px 18px rgba(2,6,23,0.6); }
+  .logo{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#0ea5a4,#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;margin:10px auto;}
+  h1{margin:6px 0 14px;text-align:center;font-size:18px;letter-spacing:0.6px;}
+  .muted{color:var(--muted);font-size:13px;text-align:center;margin-bottom:12px;}
+  label{display:block;margin-bottom:6px;font-size:13px;color:var(--muted);}
+  input[type="text"], input[type="password"]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:var(--glass);color:inherit;margin-bottom:12px}
+  .btn{display:inline-block;padding:10px 14px;border-radius:999px;background:linear-gradient(90deg,#334155,#0ea5a4);border:none;color:white;font-weight:600;cursor:pointer;}
+  .pill{display:inline-block;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.03);cursor:pointer;margin:6px 4px;}
+  .top-right{position:relative;}
+  .three-dot{position:absolute;right:12px;top:12px;font-size:22px;cursor:pointer;user-select:none}
+  .menu-popup{position:absolute;right:12px;top:40px;background:#071428;padding:8px;border-radius:10px;box-shadow:0 6px 18px rgba(2,6,23,0.6);display:none;}
+  .menu-popup button{display:block;width:180px;text-align:left;padding:8px;border-radius:8px;background:transparent;border:none;color:var(--muted);cursor:pointer;}
+  .centered-notif{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:#082033;padding:18px 22px;border-radius:12px;display:none;z-index:9999;box-shadow:0 8px 30px rgba(2,6,23,0.7);font-weight:700;}
+  .small{font-size:13px;color:var(--muted)}
+  .grid{display:grid;gap:8px}
+  .attack-option{padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);cursor:pointer;text-align:center;font-weight:600}
+  .footer-version{text-align:center;font-size:12px;color:var(--muted);margin-top:10px}
+  /* simple page hide/show */
+  .page{display:none}
+  .page.active{display:block}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .back-btn{background:transparent;border:none;color:var(--muted);cursor:pointer}
+  .field{margin-bottom:10px}
+  .chip{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);font-weight:600}
+  .muted-2{color:#9fb0c8;font-size:12px}
+  /* NEW: single MENU and dropdown list */
+  .menu-button{display:block;width:100%;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid rgba(255,255,255,0.04);font-weight:700;cursor:pointer;text-align:center}
+  .menu-list{margin-top:12px;display:none;flex-direction:column;gap:8px}
+  .menu-item{padding:12px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.02);cursor:pointer;text-align:center;font-weight:700}
+  /* selected purple-black style */
+  .menu-item.selected{
+    background: linear-gradient(135deg,#4c1d95 0%, #0b0720 100%);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 6px 18px rgba(76,29,149,0.18);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <!-- LOGIN PAGE (user default: @Vinzzxploit / v1) -->
+  <div id="loginPage" class="card page active">
+    <div class="top-right">
+      <div class="three-dot" id="loginThree">⋯</div>
+      <div class="menu-popup" id="loginMenu">
+        <button id="goDevFromLogin">DEV</button>
+        <button id="goAttackFromLogin">ATTACK WA</button>
+        <button id="goPanelFromLogin">PANEL</button>
+      </div>
+    </div>
+
+    <div class="logo">VZ</div>
+    <h1>LOGIN ADMIN</h1>
+    <p class="muted">Masukkan kredensial admin</p>
+
+    <label>Username</label>
+    <input id="userInput" type="text" placeholder="@Vinzzxploit" value="@Vinzzxploit">
+    <label>Password</label>
+    <input id="passInput" type="password" placeholder="v1" value="">
+
+    <div style="display:flex;gap:8px;align-items:center;justify-content:center;">
+      <button id="loginBtn" class="btn">Masuk</button>
+      <button id="openDashboardLogin" class="pill small">Dashboard (Admin2)</button>
+    </div>
+
+    <p class="small" style="margin-top:10px;text-align:center">Jika ingin akses dashboard, klik "Dashboard (Admin2)" lalu masukkan Admin2 / 2</p>
+    <p class="footer-version">v.1.0</p>
+  </div>
+
+  <!-- MENU UTAMA after login -->
+  <div id="mainMenu" class="card page">
+    <div class="topbar">
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="logo" style="width:56px;height:56px;font-size:16px">VZ</div>
+        <div>
+          <div style="font-weight:700">@Vinzzxploit</div>
+          <div class="small muted-2">USER ADMIN, PASSWORD, XP</div>
+        </div>
+      </div>
+      <div style="position:relative">
+        <div class="three-dot" id="mainThree">⋯</div>
+        <div class="menu-popup" id="mainMenuPopup">
+          <button id="main_to_dev">DEV</button>
+          <button id="main_to_attack">ATTACK WA</button>
+          <button id="main_to_panel">PANEL</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-bottom:12px">
+      <div style="font-size:12px;color:var(--muted)">JUMLAH PERANGKAT</div>
+      <div id="deviceCount" style="font-size:28px;font-weight:800;margin-top:6px">0</div>
+      <div class="small muted-2">Perangkat yang memulai simulasi</div>
+    </div>
+
+    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px">
+      <button id="simulateEnter" class="pill">Simulasi Masuk</button>
+      <button id="simulateExit" class="pill">Simulasi Keluar</button>
+    </div>
+
+    <div style="border-radius:12px;padding:12px;margin-top:8px">
+      <div class="small muted-2">Attack Menu (akses lewat tombol ⋯ kanan atas)</div>
+    </div>
+
+    <div style="text-align:center;margin-top:12px">
+      <button id="logoutBtn" class="pill">Logout</button>
+    </div>
+    <p class="footer-version">v.1.0</p>
+  </div>
+
+  <!-- ATTACK MENU PAGE (DIUBAH: single MENU button + list muncul) -->
+  <div id="attackPage" class="card page">
+    <div class="topbar">
+      <button class="back-btn" id="backFromAttack">← Kembali</button>
+      <div class="chip">ATTACK MENU</div>
+      <div style="width:56px"></div>
+    </div>
+
+    <div style="text-align:center">
+      <div class="logo" style="width:76px;height:76px;font-size:18px">ATK</div>
+      <div class="muted">MASUKAN NO TARGET CONTOH : 62××××××</div>
+    </div>
+
+    <div style="margin-top:12px">
+      <label>Nomor Target (contoh: 62...)</label>
+      <input id="targetInput" type="text" placeholder="Masukkan nomor target">
+    </div>
+
+    <!-- NEW: single MENU button -->
+    <div style="margin-top:14px">
+      <button id="menuToggleBtn" class="menu-button">MENU</button>
+
+      <div id="menuList" class="menu-list" role="menu" aria-hidden="true">
+        <div class="menu-item" data-action="ATTACK ANDROID">ATTACK ANDROID</div>
+        <div class="menu-item" data-action="INVIS WA">INVIS WA</div>
+        <div class="menu-item" data-action="INVIS IP">INVIS IP</div>
+        <div class="menu-item" data-action="FORCLOSE">FORCLOSE</div>
+        <div class="menu-item" data-action="BLOCKED WA">BLOCKED WA</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:14px">
+      <button id="sendBugBtn" class="btn">SEND BUG</button>
+    </div>
+
+    <p class="small" style="margin-top:10px;text-align:center;color:var(--muted)">Catatan: Ini hanya SIMULASI UI. Tidak ada aktivitas jaringan.</p>
+  </div>
+
+  <!-- DEV PAGE -->
+  <div id="devPage" class="card page">
+    <div class="topbar">
+      <button class="back-btn" id="backFromDev">← Kembali</button>
+      <div class="chip">DEV</div>
+      <div style="width:56px"></div>
+    </div>
+
+    <div style="text-align:center;margin-top:6px">
+      <div class="logo" style="width:86px;height:86px;font-size:18px">DEV</div>
+      <h1 style="margin-top:8px">SAYA RDVSP V1</h1>
+      <p class="muted">YANG DICIPTAKAN OLEH @Vinzz xploit dan digunakan untuk merusak sistem wa atau biasanya disebut BUG.</p>
+      <p class="small muted-2">-- HALAMAN HANYA BERSIFAT INFORMASI (SIMULASI) --</p>
+    </div>
+  </div>
+
+  <!-- PANEL PAGE -->
+  <div id="panelPage" class="card page">
+    <div class="topbar">
+      <button class="back-btn" id="backFromPanel">← Kembali</button>
+      <div class="chip">PANEL</div>
+      <div style="width:56px"></div>
+    </div>
+
+    <div style="padding:6px">
+      <p class="small muted-2">Panel informasi — hanya mock. Tidak ada fungsi berbahaya yang difungsikan.</p>
+      <p style="margin-top:10px">Status: <span id="panelStatus">IDLE</span></p>
+    </div>
+  </div>
+
+  <!-- DASHBOARD LOGIN (Admin2 / 2) -->
+  <div id="dashLogin" class="card page">
+    <button class="back-btn" id="backToLoginFromDash">← Kembali</button>
+    <div style="text-align:center;margin-top:6px">
+      <div class="logo">DB</div>
+      <h1>Dashboard Login</h1>
+      <p class="muted">Masuk sebagai Admin2 untuk melihat Dashboard</p>
+    </div>
+
+    <div style="margin-top:10px">
+      <label>Username</label>
+      <input id="dashUser" type="text" value="">
+      <label>Password</label>
+      <input id="dashPass" type="password" value="">
+      <div style="text-align:center;margin-top:8px">
+        <button id="dashLoginBtn" class="btn">Masuk Dashboard</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD PAGE -->
+  <div id="dashboardPage" class="card page">
+    <div class="topbar">
+      <button class="back-btn" id="dashLogout">← Logout</button>
+      <div class="chip">DASHBOARD</div>
+      <div style="width:56px"></div>
+    </div>
+
+    <div style="text-align:center;margin-bottom:12px">
+      <div style="font-size:12px;color:var(--muted)">JUMLAH PERANGKAT</div>
+      <div id="dashDeviceCount" style="font-size:28px;font-weight:800;margin-top:6px">0</div>
+      <div class="small muted-2">Perangkat yang memulai simulasi</div>
+    </div>
+
+    <div style="text-align:center;margin-top:8px">
+      <button id="dashAttackBtn" class="pill">Buka Attack Menu (Dashboard)</button>
+    </div>
+
+    <p class="footer-version">v.1.0</p>
+  </div>
+</div>
+
+<div id="centerNotif" class="centered-notif"></div>
+
+<script>
+  // ====== Utility & state (LOCAL ONLY; no networking) ======
+  const pages = {
+    login: document.getElementById('loginPage'),
+    main: document.getElementById('mainMenu'),
+    attack: document.getElementById('attackPage'),
+    dev: document.getElementById('devPage'),
+    panel: document.getElementById('panelPage'),
+    dashLogin: document.getElementById('dashLogin'),
+    dashboard: document.getElementById('dashboardPage')
+  };
+  const centerNotif = document.getElementById('centerNotif');
+
+  function showPage(pageKey){
+    Object.values(pages).forEach(p=>p.classList.remove('active'));
+    pages[pageKey].classList.add('active');
+  }
+
+  // device count simulated and persisted in localStorage for demo
+  let deviceCount = parseInt(localStorage.getItem('sim_device_count')||'0',10);
+  function setDeviceCount(n){
+    deviceCount = Math.max(0, Number(n)||0);
+    localStorage.setItem('sim_device_count', String(deviceCount));
+    document.getElementById('deviceCount').innerText = deviceCount;
+    document.getElementById('dashDeviceCount').innerText = deviceCount;
+  }
+  setDeviceCount(deviceCount);
+
+  // ===== login flows =====
+  document.getElementById('loginBtn').addEventListener('click', ()=>{
+    const u = document.getElementById('userInput').value.trim();
+    const p = document.getElementById('passInput').value.trim();
+    if(u === '@Vinzzxploit' && p === 'v1'){
+      showPage('main');
+      showToast('Login berhasil sebagai @Vinzzxploit', 1500);
+    } else {
+      showToast('Username / Password salah', 1400);
+    }
+  });
+
+  // Dashboard quick open (requires Admin2/2)
+  document.getElementById('openDashboardLogin').addEventListener('click', ()=>{
+    showPage('dashLogin');
+  });
+
+  document.getElementById('dashLoginBtn').addEventListener('click', ()=>{
+    const u = document.getElementById('dashUser').value.trim();
+    const p = document.getElementById('dashPass').value.trim();
+    if(u === 'Admin2' && p === '2'){
+      showPage('dashboard');
+      showToast('Dashboard: akses diterima', 1200);
+    } else {
+      showToast('Login Dashboard gagal', 1200);
+    }
+  });
+  document.getElementById('dashLogout').addEventListener('click', ()=> showPage('login'));
+
+  // logout from main
+  document.getElementById('logoutBtn').addEventListener('click', ()=>{
+    showPage('login');
+  });
+
+  // ===== simulate device enter/exit =====
+  document.getElementById('simulateEnter').addEventListener('click', ()=>{
+    // Simulasi "ada orang masuk" => count jadi 1
+    setDeviceCount(1);
+    showToast('Perangkat masuk — count = 1', 900);
+  });
+  document.getElementById('simulateExit').addEventListener('click', ()=>{
+    setDeviceCount(0);
+    showToast('Perangkat keluar — count = 0', 900);
+  });
+
+  // ===== three-dot menus =====
+  function togglePopup(elId, popupId){
+    const p = document.getElementById(popupId);
+    p.style.display = (p.style.display === 'block') ? 'none' : 'block';
+  }
+  document.getElementById('loginThree').addEventListener('click', ()=> togglePopup('loginThree','loginMenu'));
+  document.getElementById('mainThree').addEventListener('click', ()=> togglePopup('mainThree','mainMenuPopup'));
+  // close popups when clicking outside
+  window.addEventListener('click', (e)=>{
+    if(!e.target.closest('#loginMenu') && !e.target.closest('#loginThree')) document.getElementById('loginMenu').style.display='none';
+    if(!e.target.closest('#mainMenuPopup') && !e.target.closest('#mainThree')) document.getElementById('mainMenuPopup').style.display='none';
+  });
+
+  // menu navigation from popups
+  document.getElementById('goDevFromLogin').addEventListener('click', ()=>{ showPage('dev'); document.getElementById('loginMenu').style.display='none';});
+  document.getElementById('goAttackFromLogin').addEventListener('click', ()=>{ showPage('attack'); document.getElementById('loginMenu').style.display='none';});
+  document.getElementById('goPanelFromLogin').addEventListener('click', ()=>{ showPage('panel'); document.getElementById('loginMenu').style.display='none';});
+
+  document.getElementById('main_to_dev').addEventListener('click', ()=>{ showPage('dev'); document.getElementById('mainMenuPopup').style.display='none';});
+  document.getElementById('main_to_attack').addEventListener('click', ()=>{ showPage('attack'); document.getElementById('mainMenuPopup').style.display='none';});
+  document.getElementById('main_to_panel').addEventListener('click', ()=>{ showPage('panel'); document.getElementById('mainMenuPopup').style.display='none';});
+
+  document.getElementById('backFromAttack').addEventListener('click', ()=> showPage('main'));
+  document.getElementById('backFromDev').addEventListener('click', ()=> showPage('main'));
+  document.getElementById('backFromPanel').addEventListener('click', ()=> showPage('main'));
+  document.getElementById('backToLoginFromDash').addEventListener('click', ()=> showPage('login'));
+
+  // ===== Attack menu behavior (single MENU) =====
+  const menuToggleBtn = document.getElementById('menuToggleBtn');
+  const menuList = document.getElementById('menuList');
+  const menuItems = Array.from(menuList.querySelectorAll('.menu-item'));
+  let selectedMenuAction = null;
+
+  menuToggleBtn.addEventListener('click', ()=>{
+    const isShown = menuList.style.display === 'flex';
+    menuList.style.display = isShown ? 'none' : 'flex';
+    menuList.setAttribute('aria-hidden', isShown ? 'true' : 'false');
+  });
+
+  // clicking an item: mark selected (ungu-hitam) and show small toast
+  menuItems.forEach(it=>{
+    it.addEventListener('click', ()=>{
+      // remove selected from others
+      menuItems.forEach(m => m.classList.remove('selected'));
+      // add selected to clicked
+      it.classList.add('selected');
+      selectedMenuAction = it.dataset.action;
+      showToast('Menu dipilih: ' + selectedMenuAction, 900);
+      // optionally keep menuList open or close - here we keep it open so user sees selection
+    });
+  });
+
+  // Two different "SEND BUG" behaviors by place:
+  // - If user opened attack page from dashboard (openedFromDashboard = true): show 2s success
+  // - Else: 5s success
+  let openedFromDashboard = false;
+  document.getElementById('sendBugBtn').addEventListener('click', ()=>{
+    // purely UI simulation
+    if(!selectedMenuAction){
+      showToast('Pilih menu dulu lewat tombol MENU', 1200);
+      return;
+    }
+    if(openedFromDashboard){
+      showCenterMsg('✅SUCCES MENU TELAH DI SPAM LEKKU', 2000);
+    } else {
+      showCenterMsg('✅SUCCES MENU TELAH DI SPAM LEKKU', 5000);
+    }
+    // after send, reset selection (optional): keep selection as-is; here we keep it
+    // after notification ends, auto-return to attack page (already there). No network actions.
+  });
+
+  document.getElementById('dashAttackBtn').addEventListener('click', ()=>{
+    openedFromDashboard = true;
+    showPage('attack');
+  });
+
+  // ===== simple panel status update (mock) =====
+  document.getElementById('panelPage').addEventListener('click', ()=>{
+    document.getElementById('panelStatus').innerText = 'IDLE';
+  });
+
+  // ===== helper: center message =====
+  function showCenterMsg(text, ms=2000){
+    centerNotif.innerText = text;
+    centerNotif.style.display = 'block';
+    setTimeout(()=>{ centerNotif.style.display = 'none'; }, ms);
+  }
+  function showToast(text, ms=1200){
+    // small ephemeral center toast
+    showCenterMsg(text, ms);
+  }
+
+  // ensure dashboard device count updates when storage changed (simulate multi-window)
+  window.addEventListener('storage', (e)=>{
+    if(e.key === 'sim_device_count'){
+      setDeviceCount(parseInt(e.newValue||'0',10));
+    }
+  });
+
+  // init: hide center notif on load
+  centerNotif.style.display = 'none';
+
+  // Security note in console
+  console.log("NOTICE: Ini adalah SIMULASI UI murni (tidak berbahaya). Jangan gunakan untuk merusak layanan nyata.");
+</script>
+</body>
+</html>
